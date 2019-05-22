@@ -1,7 +1,10 @@
 /* Created by guan on 2019/5/21 */
+/* 创建http服务 */
 let http = require('http')
 
-let server = http.createServer(function (request, response) {
+let server = http.createServer()
+
+server.on('request', function (request, response) {
   let  test =  [
     {id: '1', title: '标题一'},
     {id: '2', title: '标题二'},
@@ -24,7 +27,6 @@ let server = http.createServer(function (request, response) {
     response.end('other page')
   }
 })
-
 
 server.listen(5000, '127.0.0.1', function () {
   console.log('127.0.0.1:5000 启动成功！');
