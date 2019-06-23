@@ -11,4 +11,27 @@ express学习测试
 npm install --save art-template
 npm install --save express-art-template
 ```
+## express处理get
+```node
+  // express默认处理get
+  let comment = req.query
+```
 
+## express处理post
+```shell
+  npm install body-parser --save // 处理post
+```
+
+```node
+   // express 处理post必须引入中间件
+   var bodyParser = require('body-parser')
+   
+   // body-parser配置
+   // parse application/x-www-form-urlencoded
+   app.use(bodyParser.urlencoded({ extended: false }))
+   
+   // parse application/json
+   app.use(bodyParser.json())
+   
+  let comment = req.body
+```

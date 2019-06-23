@@ -1,13 +1,22 @@
 /* Created by guan on 2019/6/20 */
 /* 创建express服务 */
 var express = require('express');
+var bodyParser =  require('body-parser')
 var app = express()
 
 /* 提供静态资源服务 */
+app.use('/node_modules', express.static('./node_modules'))
 app.use('/public', express.static('./public'))
 
 /* 配置使用art-template */
 app.engine('html', require('express-art-template'))
+
+/* 配置bodyParser */
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 var comments = [{
   name: '张三',
@@ -47,8 +56,8 @@ app.get('/post', function (req, res) {
   res.render('post.html')
 })
 
-app.get('/pinglun', function (req, res) {
-  let comment = req.query
+app.post('/post', function (req, res) {
+  let comment = req.body
   console.log(comment)
   comment.dateTime = '2019-06-21'
   comments.unshift(comment)
@@ -56,5 +65,5 @@ app.get('/pinglun', function (req, res) {
 })
 
 app.listen(3000, function () {
-  console.log('3000启动成功！')
+  console.log('3000 runing...')
 })
