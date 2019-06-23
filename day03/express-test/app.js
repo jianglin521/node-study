@@ -65,5 +65,5 @@ app.post('/post', function (req, res) {
 })
 
 app.listen(3000, function () {
-  console.log('3000 runing...')
+  console.log('running 3000...')
 })
