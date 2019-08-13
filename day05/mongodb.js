@@ -1,0 +1,9 @@
+/* Created by guan on 2019/8/13 */
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/runoob";
+
+MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+  if (err) throw err;
+  console.log("数据库已创建!");
+  db.close();
+});
