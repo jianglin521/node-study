@@ -1,0 +1,16 @@
+{
+  "name": "day05",
+  "version": "1.0.0",
+  "description": "安装 `npm i -g json-server`",
+  "main": "00.js",
+  "dependencies": {
+    "mongodb": "^3.3.0-beta2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
