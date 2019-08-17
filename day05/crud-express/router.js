@@ -43,7 +43,7 @@ router.post('/students/new', function (req, res) {
   // 2. 处理
   //    将数据保存到 db.json 文件中用以持久化
   // 3. 发送响应
-  Student.save(req.body, function (err) {
+  new Student(req.body).save(function (err) {
     if (err) {
       return res.status(500).send('Server error.')
     }
@@ -61,11 +61,11 @@ router.get('/students/edit', function (req, res) {
   // 3. 渲染编辑页面
   //    根据 id 把学生信息查出来
   //    使用模板引擎渲染页面
-
-  Student.findById(parseInt(req.query.id), function (err, student) {
+  Student.findById(req.query.id, function (err, student) {
     if (err) {
       return res.status(500).send('Server error.')
     }
+    console.log(student,'0000000');
     res.render('edit.html', {
       student: student
     })
@@ -81,10 +81,12 @@ router.post('/students/edit', function (req, res) {
   // 2. 更新
   //    Student.updateById()
   // 3. 发送响应
-  Student.updateById(req.body, function (err) {
+  console.log(req.body);
+  Student.findByIdAndUpdate(req.body.id, req.body, function (err, ret) {
     if (err) {
       return res.status(500).send('Server error.')
     }
+    //console.log(ret);
     res.redirect('/students')
   })
 })
@@ -97,7 +99,7 @@ router.get('/students/delete', function (req, res) {
   // 2. 根据 id 执行删除操作
   // 3. 根据操作结果发送响应数据
 
-  Student.deleteById(req.query.id, function (err) {
+  Student.deleteOne(req.query.id, function (err) {
     if (err) {
       return res.status(500).send('Server error.')
     }
