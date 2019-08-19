@@ -47,6 +47,7 @@ router.post('/students/new', function (req, res) {
     if (err) {
       return res.status(500).send('Server error.')
     }
+    console.log(err);
     res.redirect('/students')
   })
 })
@@ -61,7 +62,7 @@ router.get('/students/edit', function (req, res) {
   // 3. 渲染编辑页面
   //    根据 id 把学生信息查出来
   //    使用模板引擎渲染页面
-  Student.findById(req.query.id, function (err, student) {
+  Student.findOne({_id: req.query.id}, function (err, student) {
     if (err) {
       return res.status(500).send('Server error.')
     }
@@ -82,11 +83,11 @@ router.post('/students/edit', function (req, res) {
   //    Student.updateById()
   // 3. 发送响应
   console.log(req.body);
-  Student.findByIdAndUpdate(req.body.id, req.body, function (err, ret) {
+  Student.updateOne({ _id: req.body.id }, req.body,function (err, ret) {
     if (err) {
       return res.status(500).send('Server error.')
     }
-    //console.log(ret);
+    console.log(err, ret, 'updateOne');
     res.redirect('/students')
   })
 })
@@ -98,13 +99,13 @@ router.get('/students/delete', function (req, res) {
   // 1. 获取要删除的 id
   // 2. 根据 id 执行删除操作
   // 3. 根据操作结果发送响应数据
-
-  Student.deleteOne(req.query.id, function (err) {
+  Student.deleteOne({ _id: req.query.id }, function (err) {
+    console.log(err)
     if (err) {
       return res.status(500).send('Server error.')
     }
     res.redirect('/students')
-  })
+  });
 })
 
 // 3. 把 router 导出
