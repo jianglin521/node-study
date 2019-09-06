@@ -1,0 +1,22 @@
+{{extend './layout.html'}}
+
+{{ block 'header'}}
+<style>
+  div {
+    background: red;
+  }
+</style>
+{{ /block }}
+
+
+{{ block 'content'}}
+  <div>
+    我是列表页自己的内容
+  </div>
+{{ /block }}
+
+{{ block 'script'}}
+<script type="text/javascript">
+    console.log('11111111111')
+</script>
+{{ /block }}
