@@ -14,12 +14,36 @@ router.get('/', function (req, res) {
 
 /* 登录 */
 router.get('/login', function (req, res) {
-  console.log();
   res.render('login.html')
 })
 
-router.post('/login', function (req, res) {
-  //res.render('index.html')
+router.post('/login', async function (req, res) {
+  const body = req.body
+
+  try {
+    const user = await User.findOne({email: body.email, password: md5(md5(body.password))})
+
+    // 如果邮箱和密码匹配，则 user 是查询到的用户对象，否则就是 null
+    if (!user) {
+      return res.status(200).json({
+        err_code: 1,
+        message: '用户或者密码不存在'
+      })
+    }
+
+    // 登录成功，使用 Session 记录用户的登陆状态
+    req.session.user = user
+
+    return res.status(200).json({
+      err_code: 0,
+      message: '登录成功'
+    })
+  } catch (err) {
+    return res.status(500).json({
+      err_code: 500,
+      message: '服务器错误！'
+    })
+  }
 })
 
 /* 注册 */
@@ -27,50 +51,45 @@ router.get('/register', function (req, res) {
   res.render('register.html')
 })
 
-router.post('/register', function (req, res) {
+router.post('/register', async function (req, res) {
   const body = req.body
-  User.findOne({
-    $or: [
-      { email: body.email },
-      { nickname: body.nickname }
-    ]
-  }, function (err, data) {
-    if (err) {
-      return res.status(500).json({
-        err_code: 500,
-        message: '服务器错误！'
-      })
-    }
-    if (data) {
-      // 邮箱或昵称已存在
-      return res.status(200).json({
+  try {
+    if (await User.findOne({ email: body.email })) {
+       return res.status(200).json({
         err_code: 1,
-        message: '邮箱或者昵称存在！'
+        message: '邮箱已存在!'
       })
     }
-    // 对密码进行 md5 重复加密
-    body.password = md5(md5(body.password))
 
-    // 存放数据
-    new User(body).save((err, user) => {
-      if (err) {
-        return res.status(500).json({
-          err_code: 500,
-          message: '服务器错误！'
-        })
-      }
-
-      // 注册成功，使用 Session 记录用户的登陆状态
-      req.session.user = user
-
-      // 注册成功
+    if (await User.findOne({ nickname: body.nickname })) {
       return res.status(200).json({
-        err_code: 0,
-        message: '注册成功！',
-        content: user,
+        err_code: 2,
+        message: '昵称已存在!'
       })
-    });
-  })
+    }
+
+    // 创建用户，执行注册
+    await new User(body).save()
+
+    res.status(200).json({
+      err_code: 0,
+      message: '注册用户成功！'
+    })
+  } catch (err) {
+    return res.status(500).json({
+      err_code: 500,
+      message: '服务器错误！'
+    })
+  }
+})
+
+/* 退出 */
+router.get('/logout', function (req, res) {
+  // 清除登录状态
+  req.session.user = null
+
+  // 重定向到登录页面
+  res.redirect('/login')
 })
 
 module.exports = router
