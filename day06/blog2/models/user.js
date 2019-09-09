@@ -2,7 +2,9 @@
 var mongoose = require('mongoose')
 
 // 连接数据库
-mongoose.connect('mongodb://localhost/test', { useMongoClient: true })
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/test', { useMongoClient: true });
+//mongoose.connect('mongodb://localhost/test', { useMongoClient: true })
 
 var Schema = mongoose.Schema
 

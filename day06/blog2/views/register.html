@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>用户注册</title>
   <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="/public/css/login.css">
 </head>
@@ -12,7 +12,7 @@
   <div class="main">
     <div class="header">
       <a href="/">
-        <img src="/public/img/logo3.png" alt="">
+        <img style="width: 120px;" src="/public/img/hero.png" alt="">
       </a>
       <h1>用户注册</h1>
     </div>
@@ -22,7 +22,7 @@
 
       后来有人想到了一种办法，来解决这个问题。
      -->
-    <form id="register_form" method="post" action="/register">
+    <form id="register_form">
       <div class="form-group">
         <label for="email">邮箱</label>
         <input type="email" class="form-control" id="email" name="email" placeholder="Email" autofocus>
@@ -55,13 +55,11 @@
         success: function (data) {
           var err_code = data.err_code
           if (err_code === 0) {
-            // window.alert('注册成功！')
+             //window.alert('注册成功！')
             // 服务端重定向针对异步请求无效
             window.location.href = '/'
           } else if (err_code === 1) {
-            window.alert('邮箱已存在！')
-          } else if (err_code === 2) {
-            window.alert('昵称已存在！')
+            window.alert('邮箱或者昵称已存在！')
           } else if (err_code === 500) {
             window.alert('服务器忙，请稍后重试！')
           }
