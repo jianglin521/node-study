@@ -69,7 +69,10 @@ router.post('/register', async function (req, res) {
     }
 
     // 创建用户，执行注册
-    await new User(body).save()
+    const user = await new User(body).save()
+
+    // 登录成功，使用 Session 记录用户的登陆状态
+    req.session.user = user
 
     res.status(200).json({
       err_code: 0,
